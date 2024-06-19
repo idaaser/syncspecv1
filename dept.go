@@ -15,6 +15,10 @@ type Department struct {
 }
 
 type (
+
+	// PagingDepartments 分页查询返回的部门
+	PagingDepartments = PagingResult[*Department]
+
 	// SearchDepartmentRequest 部门搜索请求
 	SearchDepartmentRequest struct {
 		Keyword string `json:"keyword"`
@@ -27,7 +31,7 @@ type (
 	}
 
 	// ListDepatmentRequest 拉取部门列表请求
-	ListDepatmentRequest = PagingRequest
+	ListDepatmentRequest = PagingParam
 
 	// ListDepartmentReqsponse 拉取部门列表响应
 	ListDepartmentReqsponse = PagingDepartments

@@ -58,6 +58,9 @@ const (
 )
 
 type (
+	// PagingUsers 分页查询返回的用户
+	PagingUsers = PagingResult[*User]
+
 	// SearchUserRequest 部门搜索请求
 	SearchUserRequest struct {
 		Keyword string `json:"keyword"`
@@ -71,8 +74,8 @@ type (
 
 	// ListUsersInDepatmentRequest 拉取部门直属用户列表请求
 	ListUsersInDepatmentRequest struct {
-		DepartmentID  string `json:"deptid"`
-		PagingRequest `json:",inline"`
+		DepartmentID string `json:"deptid"`
+		PagingParam  `json:",inline"`
 	}
 	// ListUsersInDepartmentResponse 拉取部门直属用户列表响应
 	ListUsersInDepartmentResponse = PagingUsers

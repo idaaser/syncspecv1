@@ -41,7 +41,7 @@ type (
 	}
 
 	// GetTokenResponse 获取token响应
-	GetTokenResponse struct{}
+	GetTokenResponse = Token
 )
 
 // Validate 校验请求合法性
