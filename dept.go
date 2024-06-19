@@ -33,6 +33,6 @@ type (
 	// ListDepatmentRequest 拉取部门列表请求
 	ListDepatmentRequest = PagingParam
 
-	// ListDepartmentReqsponse 拉取部门列表响应
-	ListDepartmentReqsponse = PagingDepartments
+	// ListDepartmentResponse 拉取部门列表响应
+	ListDepartmentResponse = PagingDepartments
 )
