@@ -22,3 +22,11 @@ type (
 		Cursor string `query:"cursor"`
 	}
 )
+
+// GetSize 若传入的size<=0, 则使用默认的size=50
+func (param PagingParam) GetSize() int {
+	if param.Size <= 0 {
+		return 50
+	}
+	return param.Size
+}
