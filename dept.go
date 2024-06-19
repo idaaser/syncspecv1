@@ -1,0 +1,34 @@
+// Package syncspec 定义了通用的数据结构, 包括"部门"和"用户"等
+package syncspec
+
+// Department 定义"部门"的数据结构
+type Department struct {
+	// 唯一标识: 必须, 唯一, 长度<=64
+	ID string `json:"id"`
+
+	// 父部门唯一标识: 必须, 长度<=64.
+	// 注: Parent为空代表是根部门
+	Parent string `json:"parent"`
+
+	// 部门名称: 必须, 非空, 长度<=128
+	Name string `json:"name"`
+}
+
+type (
+	// SearchDepartmentRequest 部门搜索请求
+	SearchDepartmentRequest struct {
+		Keyword string `json:"keyword"`
+	}
+
+	// SearchDepartmentResponse 部门搜索响应
+	SearchDepartmentResponse struct {
+		Data        []*Department `json:"data"`
+		ErrResponse `json:",inline"`
+	}
+
+	// ListDepatmentRequest 拉取部门列表请求
+	ListDepatmentRequest = PagingRequest
+
+	// ListDepartmentReqsponse 拉取部门列表响应
+	ListDepartmentReqsponse = PagingDepartments
+)
