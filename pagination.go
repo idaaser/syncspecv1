@@ -1,4 +1,4 @@
-package syncspec
+package syncspecv1
 
 type (
 	// PagingResult 定义了分页请求返回的数据

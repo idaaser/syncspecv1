@@ -1,5 +1,5 @@
-// Package syncspec 定义了通用的数据结构, 包括"部门"和"用户"等
-package syncspec
+// Package syncspecv1 定义了通用的数据结构, 包括"部门"和"用户"等
+package syncspecv1
 
 // Department 定义"部门"的数据结构
 type Department struct {

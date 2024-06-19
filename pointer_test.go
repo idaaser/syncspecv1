@@ -1,4 +1,4 @@
-package syncspec
+package syncspecv1
 
 import (
 	"testing"
