@@ -21,7 +21,7 @@ type (
 
 	// SearchDepartmentRequest 部门搜索请求
 	SearchDepartmentRequest struct {
-		Keyword string `json:"keyword"`
+		Keyword string `query:"keyword"`
 	}
 
 	// SearchDepartmentResponse 部门搜索响应

@@ -17,8 +17,8 @@ type (
 	// PagingParam 定义了分页请求的参数
 	PagingParam struct {
 		// 单页请求的条数
-		Size int `json:"size"`
+		Size int `query:"size"`
 		// 分页请求的游标, 初始请求为空, 初始请求使用""
-		Cursor string `json:"cursor"`
+		Cursor string `query:"cursor"`
 	}
 )
