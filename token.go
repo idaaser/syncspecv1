@@ -1,6 +1,9 @@
 package syncspecv1
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // Token 定义了接口鉴权需要的token
 // 遵循oauth2的定义, https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.3
@@ -40,3 +43,16 @@ type (
 	// GetTokenResponse 获取token响应
 	GetTokenResponse struct{}
 )
+
+// Validate 校验请求合法性
+func (req GetTokenRequest) Validate() error {
+	if req.ClientID == "" {
+		return fmt.Errorf("client id MUST NOT be empty")
+	}
+
+	if req.ClientSecret == "" {
+		return fmt.Errorf("client secret MUST NOT be empty")
+	}
+
+	return nil
+}
