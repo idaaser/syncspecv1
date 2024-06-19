@@ -1,4 +1,4 @@
-module github.com/idaaser/syncspec/v1
+module github.com/idaaser/syncspec
 
 go 1.22
 
