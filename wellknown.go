@@ -24,6 +24,11 @@ func (w Wellknown) Spec() string {
 	return "v1"
 }
 
+// GrantTypesSupported 支持的grant_type
+func (w Wellknown) GrantTypesSupported() []string {
+	return []string{"client_credentials"}
+}
+
 const (
 	// TokenEndpointAuthMethodBasic basic auth的鉴权方式
 	TokenEndpointAuthMethodBasic = "client_secret_basic"
@@ -37,10 +42,12 @@ func (w Wellknown) MarshalJSON() ([]byte, error) {
 
 	return json.Marshal(
 		&struct {
-			Spec string `json:"spec"` // 支持的协议版本号, 固定为v1
+			Spec                string   `json:"spec"`                  // 支持的协议版本号, 固定为v1
+			GrantTypesSupported []string `json:"grant_types_supported"` // 支持的授权类型, 固定为client_credentials
 			Alias
 		}{
-			Spec:  w.Spec(),
-			Alias: (Alias)(w),
+			Spec:                w.Spec(),
+			GrantTypesSupported: w.GrantTypesSupported(),
+			Alias:               (Alias)(w),
 		})
 }

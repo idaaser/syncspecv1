@@ -1,6 +1,9 @@
 package syncspecv1
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // User 定义"用户"的数据结构
 type User struct {
@@ -75,8 +78,19 @@ type (
 	// ListUsersInDepatmentRequest 拉取部门直属用户列表请求
 	ListUsersInDepatmentRequest struct {
 		DepartmentID string `query:"deptid"`
-		PagingParam  `query:",inline"`
+		PagingParam
 	}
 	// ListUsersInDepartmentResponse 拉取部门直属用户列表响应
-	ListUsersInDepartmentResponse = PagingUsers
+	ListUsersInDepartmentResponse struct {
+		PagingUsers `json:",inline"`
+		ErrResponse `json:",inline"`
+	}
 )
+
+// Validate 合法性检查
+func (req ListUsersInDepatmentRequest) Validate() error {
+	if req.DepartmentID == "" {
+		return fmt.Errorf("query param of deptid MUST NOT be empty")
+	}
+	return nil
+}

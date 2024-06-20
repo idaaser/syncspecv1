@@ -12,6 +12,9 @@ type Department struct {
 
 	// 部门名称: 必须, 非空, 长度<=128
 	Name string `json:"name"`
+
+	// 部门在其同级部门的展示顺序
+	Order int `json:"order"`
 }
 
 type (
@@ -34,5 +37,8 @@ type (
 	ListDepatmentRequest = PagingParam
 
 	// ListDepartmentResponse 拉取部门列表响应
-	ListDepartmentResponse = PagingDepartments
+	ListDepartmentResponse struct {
+		PagingDepartments `json:",inline"`
+		ErrResponse       `json:",inline"`
+	}
 )

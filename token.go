@@ -35,7 +35,9 @@ func (t Token) MarshalJSON() ([]byte, error) {
 
 type (
 	// GetTokenRequest 获取token请求
+	// 类似https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.2
 	GetTokenRequest struct {
+		GrantType    string `form:"grant_type"` // 固定为client_credentials
 		ClientID     string `form:"client_id"`
 		ClientSecret string `form:"client_secret"`
 	}
@@ -46,6 +48,10 @@ type (
 
 // Validate 校验请求合法性
 func (req GetTokenRequest) Validate() error {
+	if req.GrantType != "client_credentials" {
+		return fmt.Errorf("grant_type MUST be client_credentials, got: %q", req.GrantType)
+	}
+
 	if req.ClientID == "" {
 		return fmt.Errorf("client id MUST NOT be empty")
 	}
