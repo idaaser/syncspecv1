@@ -1,5 +1,7 @@
 package syncspecv1
 
+import "fmt"
+
 // ErrResponse 定义了通用的接口错误返回
 type ErrResponse struct {
 	// 错误码
@@ -9,6 +11,12 @@ type ErrResponse struct {
 
 	// request id
 	RequestID string `json:"request_id,omitempty"`
+}
+
+func (err *ErrResponse) Error() string {
+	return fmt.Sprintf("error=%s, error_message=%s, request_id=%s",
+		err.Code, err.Msg, err.RequestID,
+	)
 }
 
 // 定义常见的error Code
