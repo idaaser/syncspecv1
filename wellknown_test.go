@@ -12,7 +12,6 @@ func TestWellknown_MarshalJSON(t *testing.T) {
 		TokenEndpoint:            "https://www.example.com/sync/v1/token",
 		SearchUserEndpoint:       "https://www.example.com/sync/v1/user",
 		SearchDepartmentEndpoint: "https://www.example.com/sync/v1/dept",
-		TokenEndpointAuthMethods: []string{TokenEndpointAuthMethodBasic, TokenEndpointAuthMethodPost},
 	}
 
 	b, err := json.Marshal(&w)

@@ -36,10 +36,12 @@ func (t Token) MarshalJSON() ([]byte, error) {
 type (
 	// GetTokenRequest 获取token请求
 	// 类似https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.2
+	// 不同于oauth2的点在于, Content-Type 不是 application/x-www-form-urlencoded,
+	// 改为application/json
 	GetTokenRequest struct {
-		GrantType    string `form:"grant_type"` // 固定为client_credentials
-		ClientID     string `form:"client_id"`
-		ClientSecret string `form:"client_secret"`
+		GrantType    string `json:"grant_type"` // 固定为client_credentials
+		ClientID     string `json:"client_id"`
+		ClientSecret string `json:"client_secret"`
 	}
 
 	// GetTokenResponse 获取token响应
