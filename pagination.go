@@ -21,9 +21,9 @@ type (
 	}
 )
 
-// GetSize 若传入的size<=0或>500, 则使用默认的size=50
+// GetSize 若传入的size<=0或>100, 则使用默认的size=50
 func (param PagingParam) GetSize() int {
-	if param.Size <= 0 || param.Size > 500 {
+	if param.Size <= 0 || param.Size > 100 {
 		return 50
 	}
 	return param.Size

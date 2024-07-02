@@ -5,9 +5,9 @@ import "fmt"
 // ErrResponse 定义了通用的接口错误返回
 type ErrResponse struct {
 	// 错误码, 当为""时表示请求正常
-	Code string `json:"error,omitempty"`
+	Code string `json:"code,omitempty"`
 	// 错误信息描述
-	Msg string `json:"error_message,omitempty"`
+	Msg string `json:"msg,omitempty"`
 
 	// request id
 	RequestID string `json:"request_id,omitempty"`
@@ -19,7 +19,7 @@ func (err *ErrResponse) IsError() bool {
 }
 
 func (err *ErrResponse) Error() string {
-	return fmt.Sprintf("error=%s, error_message=%s, request_id=%s",
+	return fmt.Sprintf("code=%s, msg=%s, request_id=%s",
 		err.Code, err.Msg, err.RequestID,
 	)
 }

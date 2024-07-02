@@ -3,6 +3,8 @@ package syncspecv1
 
 // Department 定义"部门"的数据结构
 type Department struct {
+	_ struct{}
+
 	// 唯一标识: 必须, 唯一, 长度<=64
 	ID string `json:"id"`
 
@@ -13,7 +15,7 @@ type Department struct {
 	// 部门名称: 必须, 非空, 长度<=128
 	Name string `json:"name"`
 
-	// 部门在其同级部门的展示顺序
+	// 部门在其同级部门的展示顺序, 可选
 	Order int `json:"order"`
 }
 

@@ -2,11 +2,12 @@ package syncspecv1
 
 import (
 	"fmt"
-	"time"
 )
 
 // User 定义"用户"的数据结构
 type User struct {
+	_ struct{}
+
 	// 唯一标识: 必须, 唯一, 长度<=64
 	ID string `json:"id"`
 
@@ -32,8 +33,8 @@ type User struct {
 	// 头像URL: 可选
 	Avatar *string `json:"avatar,omitempty"`
 
-	// 入职时间: 可选
-	JoinTime time.Time `json:"join_time"`
+	// 入职时间戳(unix timestamp): 可选
+	JoinTime int64 `json:"join_time"`
 
 	Status UserStatus `json:"status"`
 
@@ -42,6 +43,9 @@ type User struct {
 
 	// 用户所属其他部门唯一标识(除去MainDepartmentID以外): 可选
 	OtherDepartmentsID []string `json:"other_departments"`
+
+	// 用户在其部门下的展示顺序, 可选
+	Order int `json:"order"`
 
 	// 其他字段: 可选
 	ExtAttrs map[string]any `json:"extattrs"`
