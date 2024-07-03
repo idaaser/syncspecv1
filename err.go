@@ -35,6 +35,6 @@ const (
 	// 请求access_token时, 使用的client_id/client_secret不正确, 通常伴随http status code 401一起使用
 	ErrInvalidClient = "invalid_client"
 
-	// 请求超出频率限制
+	// 请求超出频率限制, 通常伴随http status code 429 一起使用
 	ErrTooManyRequests = "too_many_requests"
 )

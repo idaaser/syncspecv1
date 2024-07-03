@@ -10,8 +10,10 @@ import (
 func TestWellknown_MarshalJSON(t *testing.T) {
 	w := Wellknown{
 		TokenEndpoint:            "https://www.example.com/sync/v1/token",
-		SearchUserEndpoint:       "https://www.example.com/sync/v1/user",
-		SearchDepartmentEndpoint: "https://www.example.com/sync/v1/dept",
+		ListDepartmentsEndpoint:  "https://www.example.com/sync/v1/depts",
+		ListUsersInDeptEndpoint:  "https://www.example.com/sync/v1/users",
+		SearchUserEndpoint:       "https://www.example.com/sync/v1/users:search",
+		SearchDepartmentEndpoint: "https://www.example.com/sync/v1/depts:search",
 	}
 
 	b, err := json.Marshal(&w)
