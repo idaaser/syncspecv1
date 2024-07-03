@@ -11,7 +11,7 @@ type Wellknown struct {
 	// 获取鉴权access_token的接口
 	TokenEndpoint string `json:"token_endpoint"`
 
-	// 获取指定部门下的直属用户接口: 通过分页的方式返回部门下直属用户列表
+	// 获取指定部门下的直属用户详情接口: 通过分页的方式返回部门下直属用户列表
 	ListUsersInDeptEndpoint string `json:"list_deptartment_users_endpoint"`
 	// 用户搜索接口地址: 根据关键字搜索用户
 	SearchUserEndpoint string `json:"search_user_endpoint"`
@@ -27,7 +27,7 @@ func (w Wellknown) Spec() string {
 	return "v1"
 }
 
-// MarshalJSON json序列化, 添加spec字段为v1
+// MarshalJSON 自定义json序列化, 添加spec字段为v1
 func (w Wellknown) MarshalJSON() ([]byte, error) {
 	type Alias Wellknown
 

@@ -3,7 +3,7 @@
    * [基本概念介绍](#基本概念介绍)
    * [数据使用方(客户端)](#数据使用方客户端)
    * [数据提供方(服务端)](#数据提供方服务端)
-      * [公开配置信息接口(.well-known)](#公开配置信息接口well-known)
+      * [公开配置信息接口(well-known)](#公开配置信息接口well-known)
       * [颁发access_token接口](#颁发access_token接口)
       * [获取部门列表接口](#获取部门列表接口)
       * [获取部门直属成员详情接口](#获取部门直属成员详情接口)
@@ -33,8 +33,8 @@
     > IAM系统给业务系统颁发的凭证信息, 业务系统通过"凭证信息"来换取接口调用时必须的"鉴权access_token"
 2. 鉴权access_token
    > 业务系统调用同步接口的鉴权信息
-3. 公开配置信息: 又称 .well-known
-   >.well-known相当于一个公开的注册表, 里面包含了各个接口的请求地址, 主要包括:
+3. 公开配置信息: 又称well-known
+   >well-known相当于一个公开的注册表, 里面包含了各个接口的请求地址, 主要包括:
     - token_endpoint: 请求鉴权access_token的接口地址  
     - list_department_endpoint: 获取部门列表的接口地址
     - list_deptartment_users_endpoint: 获取部门下用户成员详情的接口地址
@@ -55,8 +55,8 @@
 
 1. 前置条件: 需要从数据提供方获取
     - 凭证信息(client_id + client_secret)
-    - .well-known接口地址
-2. 解析.well-known配置: 调用.well-known接口来获取"公开配置信息"
+    - well-known接口地址
+2. 解析well-known配置: 调用well-known接口来获取"公开配置信息"
 3. 获取鉴权access_token: 调用token_endpoint接口来获取(为了提升性能,建议缓存)
 4. 数据同步:
     - 获取部门列表: 分页循环获取
@@ -66,7 +66,7 @@
 
 作为服务端, 需要实现下述的几个API.
 
-### 公开配置信息接口(.well-known)
+### 公开配置信息接口(well-known)
 
 1. 接口鉴权方式: 不需要鉴权, 公开接口
 2. 请求方式: GET
@@ -130,7 +130,7 @@
     | 字段名| 类型| 说明|
     | ---    | ---   | ---     |
     | cursor| string | 分页请求的游标, 初始请求为""|
-    | size| int| 分页大小, 最大支持100|
+    | size| int| 分页大小, 最大支持100, 若传入值>100,则当做50来处理|
 4. 返回字段说明:
     | 字段名| 类型| 说明|
     | ---    | ---   | ---     |
@@ -181,8 +181,8 @@
     | ---    | ---   | ---     |
     | id| string| 用户不可变的唯一标识, 长度<=64,**必须返回**|
     | name| string |显示名,长度<=64,**必须返回**|
-    | username| string |登录名,唯一,长度<=64,可不返回, username/email/mobile三个必须返回1个 |
-    | email| string |邮箱,唯一,长度<=128,可不返回, username/email/mobile三个必须返回1个 |
+    | username| string |登录名,唯一,长度<=64,可不返回, 建议username/email/mobile至少返回1个 |
+    | email| string |邮箱,唯一,长度<=128,可不返回, username/email/mobile至少返回1个 |
     | mobile| string |手机号,唯一,可不返回,需遵循[E.164格式](https://en.wikipedia.org/wiki/E.164)),比如+8613411112222|
     | position| string |职务,长度<=64,可不返回 |
     | employee_number| string|工号,长度<=64,可不返回 |

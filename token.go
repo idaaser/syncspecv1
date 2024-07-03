@@ -46,7 +46,7 @@ type (
 
 	// GetTokenResponse 获取token响应
 	GetTokenResponse = struct {
-		// 接口请求正常时, 返回Tokn
+		// 接口请求正常时, 返回Token
 		*Token `json:",inline"`
 
 		// 接口请求失败时, 返回
