@@ -183,7 +183,7 @@
     | name| string |显示名,长度<=64,**必须返回**|
     | username| string |登录名,唯一,长度<=64,可不返回, 建议username/email/mobile至少返回1个 |
     | email| string |邮箱,唯一,长度<=128,可不返回, username/email/mobile至少返回1个 |
-    | mobile| string |手机号,唯一,可不返回,需遵循[E.164格式](https://en.wikipedia.org/wiki/E.164)),比如+8613411112222|
+    | mobile| string |手机号,唯一,可不返回,**需遵循**[E.164格式](https://en.wikipedia.org/wiki/E.164),比如+8613411112222|
     | position| string |职务,长度<=64,可不返回 |
     | employee_number| string|工号,长度<=64,可不返回 |
     | join_time| timestamp|入职时间戳(unix timestamp),可不返回 |
