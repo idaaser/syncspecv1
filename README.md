@@ -192,7 +192,7 @@
     | main_department| string|用户所属主部门唯一标识, **必须返回** |
     | other_departments| []string|用户所属副主部门唯一标识,可不返回 |
     | order| int| 部门在其主部门下的展示顺序,可不返回 |
-    | extattrs| map| 其他属性,以key-value的形式存在|
+    | extattrs| map| **其他属性**,以key-value的形式存在|
 6. 成功返回示例:
     ```json
     {
