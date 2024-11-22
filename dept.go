@@ -1,6 +1,8 @@
 // Package syncspecv1 定义了通用的数据结构, 包括"部门"和"用户"等
 package syncspecv1
 
+import "fmt"
+
 // Department 定义"部门"的数据结构
 type Department struct {
 	_ struct{}
@@ -44,3 +46,9 @@ type (
 		ErrResponse       `json:",inline"`
 	}
 )
+
+func (d Department) String() string {
+	return fmt.Sprintf("id=%q, name=%q, parent=%q, order=%d",
+		d.ID, d.Name, d.Parent, d.Order,
+	)
+}
