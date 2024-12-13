@@ -12,26 +12,26 @@ type User struct {
 	ID string `json:"id"`
 
 	// 登录名: 唯一, 长度<=64, Username、Email、Mobile 这三个字段建议得有一个
-	Username *string `json:"username,omitempty"`
+	Username *string `json:"username"`
 
 	// 邮箱: 唯一, Username、Email、Mobile 这三个字段建议得有一个
-	Email *string `json:"email,omitempty"`
+	Email *string `json:"email"`
 
 	// 手机号: 唯一, Username、Email、Mobile 这三个字段建议得有一个
 	// 注: 格式为E.164格式(https://en.wikipedia.org/wiki/E.164), 比如+8613411112222
-	Mobile *string `json:"mobile,omitempty"`
+	Mobile *string `json:"mobile"`
 
 	// 显示名或姓名: 必须, 长度<=64
 	Name string `json:"name"`
 
 	// 职位: 可选, 长度<=64
-	Position *string `json:"position,omitempty"`
+	Position *string `json:"position"`
 
 	// 员工工号: 可选, 长度<=64
-	EmployeeNumber *string `json:"employee_number,omitempty"`
+	EmployeeNumber *string `json:"employee_number"`
 
 	// 头像URL: 可选
-	Avatar *string `json:"avatar,omitempty"`
+	Avatar *string `json:"avatar"`
 
 	// 入职时间戳(unix timestamp): 可选
 	JoinTime int64 `json:"join_time"`

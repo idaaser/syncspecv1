@@ -4,13 +4,13 @@ import "fmt"
 
 // ErrResponse 定义了通用的接口错误返回
 type ErrResponse struct {
-	// 错误码, 当为""时表示请求正常
-	Code string `json:"code,omitempty"`
-	// 错误信息描述
-	Msg string `json:"msg,omitempty"`
+	// 错误码, 当为""时表示请求正常. 注: 不要omitempty
+	Code string `json:"code"`
+	// 错误信息描述. 注: 不要omitempty
+	Msg string `json:"msg"`
 
-	// request id
-	RequestID string `json:"request_id,omitempty"`
+	// request id. 注: 不要omitempty
+	RequestID string `json:"request_id"`
 }
 
 // IsError 判断是否是请求错误
