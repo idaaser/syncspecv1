@@ -53,3 +53,11 @@ type (
 func (d Group) String() string {
 	return fmt.Sprintf("id=%q, name=%q", d.ID, d.Name)
 }
+
+// Validate 合法性检查
+func (req ListGroupMembershipRequest) Validate() error {
+	if req.Group == "" {
+		return fmt.Errorf("query param of id MUST NOT be empty")
+	}
+	return nil
+}
