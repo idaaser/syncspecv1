@@ -36,7 +36,8 @@ type User struct {
 	// 入职时间戳(unix timestamp): 可选
 	JoinTime int64 `json:"join_time"`
 
-	Status UserStatus `json:"status"`
+	// 用户状态: 启用或禁用
+	Active bool `json:"active"`
 
 	// 用户所属主部门唯一标识: 必须
 	MainDepartmentID string `json:"main_department"`
@@ -50,19 +51,6 @@ type User struct {
 	// 其他字段: 可选
 	ExtAttrs map[string]any `json:"extattrs"`
 }
-
-// UserStatus 用户状态位
-type UserStatus int32
-
-// 已知的用户状态位
-const (
-	// 禁用
-	UserStatusDisabled UserStatus = 0
-	// 待激活
-	UserStatusInitialized UserStatus = 1
-	// 启用
-	UserStatusEnabled UserStatus = 2
-)
 
 type (
 	// PagingUsers 分页查询返回的用户
@@ -81,7 +69,7 @@ type (
 
 	// ListUsersInDepatmentRequest 拉取部门直属用户列表请求
 	ListUsersInDepatmentRequest struct {
-		DepartmentID string `query:"deptid"`
+		DepartmentID string `query:"id"`
 		PagingParam
 	}
 	// ListUsersInDepartmentResponse 拉取部门直属用户列表响应

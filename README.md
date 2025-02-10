@@ -1,19 +1,22 @@
 <!--ts-->
-* [数据同步API定义(v1版本)](#数据同步api定义v1版本)
-   * [基本概念介绍](#基本概念介绍)
-   * [数据使用方(客户端)](#数据使用方客户端)
-   * [数据提供方(服务端)](#数据提供方服务端)
-      * [公开配置信息接口(well-known)](#公开配置信息接口well-known)
-      * [颁发access_token接口](#颁发access_token接口)
-      * [获取部门列表接口](#获取部门列表接口)
-      * [获取部门直属成员详情接口](#获取部门直属成员详情接口)
-      * [搜索部门接口](#搜索部门接口)
-      * [搜索用户接口](#搜索用户接口)
-   * [附录](#附录)
-      * [分页请求](#分页请求)
-      * [通用错误返回](#通用错误返回)
-      * [访问频率限制](#访问频率限制)
-   * [参考实现](#参考实现)
+- [数据同步API定义(v1版本)](#数据同步api定义v1版本)
+  - [基本概念介绍](#基本概念介绍)
+  - [数据使用方(客户端)](#数据使用方客户端)
+  - [数据提供方(服务端)](#数据提供方服务端)
+    - [公开配置信息接口(well-known)](#公开配置信息接口well-known)
+    - [颁发access\_token接口](#颁发access_token接口)
+    - [获取部门列表接口](#获取部门列表接口)
+    - [获取部门直属成员详情接口](#获取部门直属成员详情接口)
+    - [搜索部门接口](#搜索部门接口)
+    - [搜索用户接口](#搜索用户接口)
+    - [获取group列表接口](#获取group列表接口)
+    - [获取group下用户id接口](#获取group下用户id接口)
+    - [搜索group接口](#搜索group接口)
+  - [附录](#附录)
+    - [分页请求](#分页请求)
+    - [通用错误返回](#通用错误返回)
+    - [访问频率限制](#访问频率限制)
+  - [参考实现](#参考实现)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!-- Added by: fengxi, at: Wed Jul  3 00:55:22 CST 2024 -->
@@ -35,11 +38,14 @@
    > 业务系统调用同步接口的鉴权信息
 3. 公开配置信息: 又称well-known
    >well-known相当于一个公开的注册表, 里面包含了各个接口的请求地址, 主要包括:
-    - token_endpoint: 请求鉴权access_token的接口地址  
-    - list_department_endpoint: 获取部门列表的接口地址
-    - list_deptartment_users_endpoint: 获取部门下用户成员详情的接口地址
-    - search_department_endpoint: 部门搜索接口
-    - search_user_endpoint: 用户搜索接口
+    - token_endpoint: 请求鉴权access_token的接口地址, **必须实现**
+    - list_department_endpoint: 获取部门列表的接口地址, **必须实现**
+    - list_deptartment_users_endpoint: 获取部门下用户成员详情的接口地址, **必须实现**
+    - search_department_endpoint: 部门搜索接口, **可选实现**
+    - search_user_endpoint: 用户搜索接口, **可选实现**
+    - list_group_endpoint: 获取group列表的接口地址, **可选实现**
+    - list_group_users_endpoint: 获取group下用户id的接口地址, **可选实现**
+    - search_group_endpoint: group搜索接口, **可选实现**
 4. 其他: 如无特殊说明, 所有API都遵循REST风格的定义, 包括
     - 接口鉴权方式:
         - Bearer Token的方式, 即Authorization: Bearer xxxxx-token
@@ -58,8 +64,10 @@
     - well-known接口地址
 2. 解析well-known配置: 调用well-known接口来获取"公开配置信息"
 3. 获取鉴权access_token: 调用token_endpoint接口来获取(为了提升性能,建议缓存)
-4. 数据同步:
+4. 数据同步顺序:
     - 获取部门列表: 分页循环获取
+    - 获取group列表: 分页循环获取
+    - 获取group用户id列表: 依次遍历上面获取的group id, 分页、循环获取group下用户id
     - 获取用户列表: 依次遍历上面获取的部门id, 分页、循环获取部门下直属用户详情数据 
 
 ## 数据提供方(服务端)
@@ -80,6 +88,9 @@
     | list_deptartment_users_endpoint| url| 获取部门直属成员详情的接口地址|
     | search_department_endpoint| url| 搜索部门的接口地址|
     | search_user_endpoint| url| 搜索用户的接口地址|
+    | list_group_endpoint| url| 获取group列表的接口地址|
+    | list_group_users_endpoint| url| 获取group下用户id列表的接口地址|
+    | search_group_endpoint| url| 搜索group的接口地址|
 5. 返回示例:
     ```json
     {
@@ -88,7 +99,10 @@
         "list_department_endpoint": "http://example.com/v1/depts",
         "list_deptartment_users_endpoint": "https://example.com/v1/users",
         "search_department_endpoint": "http://example.com/v1/depts:search",
-        "search_user_endpoint": "http://example.com/v1/users:search"
+        "search_user_endpoint": "http://example.com/v1/users:search",
+        "list_group_endpoint": "http://example.com/v1/groups",
+        "list_group_users_endpoint": "https://example.com/v1/groups:users",
+        "search_group_endpoint": "http://example.com/v1/groups:search",
     }
     ```
 
@@ -167,7 +181,7 @@
 3. 参数说明: 以query的形式, 传递参数 
     | 字段名| 类型| 说明|
     | ---    | ---   | ---  |
-    | deptid| string | 部门唯一标识|
+    | id| string | 部门唯一标识|
     | cursor| string | 分页请求的游标, 初始请求为""|
     | size| int| 分页大小, 最大支持100|
 4. 返回字段说明:
@@ -289,7 +303,7 @@
                 "employee_number": "12345",
                 "join_time": 1719935216,
                 "avatar": "https://example.com/avatar/uid-2.1.png",
-                "status": 1,
+                "active": true,
                 "main_department": "1.1",
                 "other_departments": ["1.2"],
                 "order": 5,
@@ -302,6 +316,94 @@
     - 最多返回10个匹配用户
     - 搜索关键字支持根据用户名称做模糊匹配, 或支持根据id、登录名、邮箱、手机号进行过滤
     - 若无匹配用户,接口不要报错, 而是正常返回, 但返回的data为空.
+7. 错误返回示例: 参见通用的错误返回
+
+### 获取group列表接口
+
+1. 接口鉴权方式: Bearer Token的方式, 即Authorization: Bearer xxxxx-token, 若请求token过期或无效,接口需要返回http status为**401**
+2. 请求方式: GET
+3. 参数说明: 以query的形式, 传递分页参数 
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---     |
+    | cursor| string | 分页请求的游标, 初始请求为""|
+    | size| int| 分页大小, 最大支持100, 若传入值>100,则当做50来处理|
+4. 返回字段说明:
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---     |
+    | has_next| bool| 是否还有数据未返回|
+    | cursor| string |分页标记,当has_next为true时,同时返回下一次分页请求的标记. 当has_next为false时,不需要返回|
+    | data| []group| 返回的group数据, group的数据结构参考下面定义|
+5. 部门数据结构说明
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---     |
+    | id| string| group不可变的唯一标识, 长度<=64, **必须返回**|
+    | name| string |group名称, 唯一,长度<=128, **必须返回**|
+6. 成功返回示例:
+    ```json
+    {
+        "has_next": true,
+        "cursor": "xxxx-cursor",
+        "data": [
+            {"id": "1", "name": "developer"},
+            {"id": "2", "name": "qa"},
+            {"id": "3", "name": "sales"},
+            {"id": "4", "name": "hr"}
+        ]
+    }
+    ```
+7. 错误返回示例: 参见通用的错误返回
+
+### 获取group下用户id接口
+
+1. 接口鉴权方式: Bearer Token的方式, 即Authorization: Bearer xxxxx-token, 若请求token过期或无效,接口需要返回http status为**401**
+2. 请求方式: GET
+3. 参数说明: 以query的形式, 传递参数 
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---  |
+    | id | string | group唯一标识|
+    | cursor| string | 分页请求的游标, 初始请求为""|
+    | size| int| 分页大小, 最大支持100|
+4. 返回字段说明:
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---     |
+    | has_next| bool| 是否还有数据未返回|
+    | cursor| string |分页标记,当has_next为true时,同时返回下一次分页请求的标记. 当has_next为false时,不需要返回|
+    | data| []string| 返回用户的id列表, 用户的数据结构参考上面定义|
+5. 成功返回示例:
+    ```json
+    {
+        "has_next": false,
+        "cursor": "",
+        "data": [ "uid-1", "uid-2", "uid-3" ]
+    }
+    ```
+7. 错误返回示例: 参见通用的错误返回
+
+### 搜索group接口
+
+1. 接口鉴权方式: Bearer Token的方式, 即Authorization: Bearer xxxxx-token, 若请求token过期或无效,接口需要返回http status为**401**
+2. 请求方式: GET
+3. 参数说明: 以query的形式, 传递参数. 
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---     |
+    | keyword| string | 搜索关键字|
+4. 返回说明:
+    | 字段名| 类型| 说明|
+    | ---    | ---   | ---     |
+    | data| []group| 返回的group数据, group的数据结构同上述group定义. 若没有匹配的group,则接口应该返回200, 返回data为空|
+5. 成功返回示例:
+    ```json
+    {
+        "data": [
+            {"id": "1", "name": "developer"},
+            {"id": "2", "name": "dev"}
+        ]
+    }
+    ```
+6. 接口实现建议:
+    - 最多返回10个匹配group
+    - 搜索关键字支持根据group名称做模糊匹配, 或支持根据id进行过滤
+    - 若无匹配group,接口不要报错, 而是正常返回, 但返回的data为空.
 7. 错误返回示例: 参见通用的错误返回
 
 ## 附录
@@ -358,7 +460,7 @@
         "request_id": "zBXaFZpIYrsllcrEjAEBoqIUpuuQFgzq"
     }
 ```
-4. 建议接口调用方主动限制频率, 若被限频, 则sleep 1s后进行重试
+3. 业务侧可以在http response header中添加[Retry-After](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After)来引导调用方重试等待时间, 最长不超过5分钟. 若未指定, 默认为1秒.
 
 ## 参考实现
 
