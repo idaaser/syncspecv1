@@ -201,7 +201,7 @@
     | position| string |职务,长度<=64,可不返回 |
     | employee_number| string|工号,长度<=64,可不返回 |
     | join_time| timestamp|入职时间戳(unix timestamp),可不返回 |
-    | status| int|用户状态,0:禁用, 1:待激活, 2:启用|
+    | active| bool|用户状态, false:禁用, true:启用|
     | avatar| url|头像url,可不返回 |
     | main_department| string|用户所属主部门唯一标识, **必须返回** |
     | other_departments| []string|用户所属副主部门唯一标识,可不返回 |
@@ -333,7 +333,7 @@
     | has_next| bool| 是否还有数据未返回|
     | cursor| string |分页标记,当has_next为true时,同时返回下一次分页请求的标记. 当has_next为false时,不需要返回|
     | data| []group| 返回的group数据, group的数据结构参考下面定义|
-5. 部门数据结构说明
+5. group数据结构说明
     | 字段名| 类型| 说明|
     | ---    | ---   | ---     |
     | id| string| group不可变的唯一标识, 长度<=64, **必须返回**|
